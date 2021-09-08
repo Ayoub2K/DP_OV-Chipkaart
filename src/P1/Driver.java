@@ -14,6 +14,7 @@ public class Driver {
                 System.out.println(myRs.getString("reiziger_id") + " " + myRs.getString("voorletters") + ". "+
                         myRs.getString("tussenvoegsel") +" " + myRs.getString("achternaam") + " (" + myRs.getString("geboortedatum") + ")");
             }
+            myStmt.close();
         }catch (Exception exc){
             exc.printStackTrace();
         }
