@@ -62,9 +62,11 @@ public class Main {
         List<Adres> adresssen = adao.findAll();
         System.out.println("[Test] AdresDAO.findAll() geeft de volgende adressen:");
         for (Adres a : adresssen) {
+            System.out.println("---");
             System.out.println(a);
+            System.out.println(rdao.findById(a.reiziger_id));
         }
-        System.out.println();
+        System.out.println("---");
 
         //find by reiziger
         Reiziger reiziger = rdao.findById(77);
