@@ -12,9 +12,9 @@ public class Driver {
             System.out.println("Alle reizigers:");
             while (myRs.next()){
                 System.out.println(myRs.getString("reiziger_id") + " " + myRs.getString("voorletters") + ". "+
-                        myRs.getString("tussenvoegsel") +" " + myRs.getString("achternaam") + " (" + myRs.getString("geboortedatum") + ")");
+                        myRs.getString("tussenvoegsel") + " " + myRs.getString("achternaam") + " (" + myRs.getString("geboortedatum") + ")");
             }
-            myStmt.close();
+            myConn.close();
         }catch (Exception exc){
             exc.printStackTrace();
         }

@@ -1,24 +1,35 @@
 package P2;
 
 import java.sql.*;
+import java.text.ParseException;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    private static Connection conn = null;
+
+    public static void main(String[] args) throws SQLException, ParseException {
+        System.out.println("---starting Programm---");
+        ReizigerDAOPsql RDsql = new ReizigerDAOPsql(getConnection());
+
+        testReizigerDAO(RDsql);
+
+        closeConnection();
     }
 
-    public static void getConnection() {
+    private static Connection getConnection() throws SQLException{
         try {
-            Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ovchip", "postgres", "postgres");
-            Statement stmt = conn.createStatement();
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ovchip", "postgres", "postgres");
             System.out.println("connecting to database");
+            return conn;
         } catch (Exception exc) {
             exc.printStackTrace();
         }
+        return null;
     }
 
-    public static void closeConnection() {
-        stmt.close();
+    private static void closeConnection() throws SQLException {
+        conn.close();
+        System.out.println("closing database");
     }
 
     /**
@@ -28,7 +39,7 @@ public class Main {
      *
      * @throws SQLException
      */
-    private static void testReizigerDAO(ReizigerDAO rdao) throws SQLException {
+    private static void testReizigerDAO(ReizigerDAO rdao) throws SQLException, ParseException {
         System.out.println("\n---------- Test ReizigerDAO -------------");
 
         // Haal alle reizigers op uit de database
