@@ -1,14 +1,14 @@
-package P2;
+package P2and3;
 
 import java.sql.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReizigerDAOPsql implements ReizigerDAO{
 
     private Connection conn = null;
+    public AdresDAO adao;
 
     public ReizigerDAOPsql(Connection conn){
         this.conn = conn;
@@ -39,21 +39,21 @@ public class ReizigerDAOPsql implements ReizigerDAO{
     public boolean update(Reiziger reiziger) throws SQLException {
         try {
             Statement myStmt = conn.createStatement();
-            String q = "UPDATE reiziger SET voorletters=?, tussenvoegsel=?, achternaam=?, geboortedatum=? WHERE reiziger_id='reiziger_id'";
+            String q = "UPDATE reiziger SET voorletters=?, tussenvoegsel=?, achternaam=?, geboortedatum=? WHERE reiziger_id=?";
             PreparedStatement pst = conn.prepareStatement(q);
             pst.setString(1, reiziger.voorletters);
             pst.setString(2, reiziger.tussenvoegsel);
             pst.setString(3, reiziger.achternaam);
             pst.setDate(4, (Date) reiziger.geboortedatum);
+            pst.setInt(4, reiziger.reiziger_id);
 
             pst.executeUpdate();
             myStmt.close();
             return true;
         } catch (SQLException ex) {
         ex.printStackTrace();
-    }
+        }
         return false;
-
     }
 
     @Override
