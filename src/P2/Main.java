@@ -8,11 +8,8 @@ public class Main {
     private static Connection conn = null;
 
     public static void main(String[] args) throws SQLException, ParseException {
-        System.out.println("---starting Programm---");
         ReizigerDAOPsql RDsql = new ReizigerDAOPsql(getConnection());
-
         testReizigerDAO(RDsql);
-
         closeConnection();
     }
 
@@ -29,7 +26,6 @@ public class Main {
 
     private static void closeConnection() throws SQLException {
         conn.close();
-        System.out.println("closing database");
     }
 
     /**
@@ -59,6 +55,9 @@ public class Main {
         System.out.println(reizigers.size() + " reizigers\n");
 
         // Voeg aanvullende tests van de ontbrekende CRUD-operaties in.
+        System.out.println(rdao.findById(77));
+        System.out.println(rdao.findByGbdatum("2002-12-03"));
+        rdao.delete(sietske);
     }
 
 }
