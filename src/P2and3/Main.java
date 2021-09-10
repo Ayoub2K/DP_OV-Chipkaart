@@ -7,8 +7,8 @@ public class Main {
     private static Connection conn = null;
 
     public static void main(String[] args) throws SQLException, ParseException {
-        ReizigerDAOPsql RDsql = new ReizigerDAOPsql(getConnection());
-        AdresDAOPsql ADsql = new AdresDAOPsql(getConnection());
+        ReizigerDAO RDsql = new ReizigerDAOPsql(getConnection());
+        AdresDAO ADsql = new AdresDAOPsql(getConnection());
         testReizigerDAO(RDsql);
         testAdresDAO(ADsql, RDsql);
         closeConnection();
@@ -45,7 +45,6 @@ public class Main {
         String gbdatum = "1981-03-14";
         Reiziger sietske = new Reiziger(77, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
         System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
-        rdao.delete(sietske);
         rdao.save(sietske);
         reizigers = rdao.findAll();
         System.out.println(reizigers.size() + " reizigers\n");
@@ -53,6 +52,7 @@ public class Main {
         // Voeg aanvullende tests van de ontbrekende CRUD-operaties in.
         System.out.println(rdao.findById(77));
         System.out.println(rdao.findByGbdatum("2002-12-03"));
+
     }
 
     private static void testAdresDAO(AdresDAO adao, ReizigerDAO rdao) throws SQLException, ParseException {
@@ -74,16 +74,24 @@ public class Main {
 
         // Save & Delete & update
         Adres mijnAdres = new Adres(32, "2802HB", "633", "K.w.Weg", "Gouda", 77);
-        adao.delete(mijnAdres);
+
+
+        Adres newAdres = new Adres(32, "2802HB", "32", "K.w.Weg", "Gouda", 77);
+        adao.update(newAdres);
+        System.out.println("na update = " + adao.findByReiziger(reiziger));
+
+
+
         adresssen = adao.findAll();
         System.out.println(adresssen.size() + " adresssen na delete");
         adao.save(mijnAdres);
         adresssen = adao.findAll();
         System.out.println(adresssen.size() + " adresssen na save");
 
-        Adres newAdres = new Adres(32, "2802HB", "32", "K.w.Weg", "Gouda", 77);
-        adao.update(newAdres);
-        System.out.println("na update = " + adao.findByReiziger(reiziger));
+
+
+        adao.delete(mijnAdres);
+        rdao.delete(rdao.findById(77));
 
 
     }
