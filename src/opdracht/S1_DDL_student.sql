@@ -50,6 +50,7 @@ ALTER TABLE medewerkers ADD geslacht char(1) CONSTRAINT m_geslacht_chk CHECK (ge
 -- Voeg de nieuwe afdeling en de nieuwe medewerker toe aan de database.
 
 
+
 -- S1.3. Verbetering op afdelingentabel
 --
 -- We gaan een aantal verbeteringen doorvoeren aan de tabel `afdelingen`:
