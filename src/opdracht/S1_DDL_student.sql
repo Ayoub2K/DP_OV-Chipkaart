@@ -49,6 +49,10 @@ ALTER TABLE medewerkers ADD geslacht char(1) CONSTRAINT m_geslacht_chk CHECK (ge
 -- en valt direct onder de directeur.
 -- Voeg de nieuwe afdeling en de nieuwe medewerker toe aan de database.
 
+INSERT INTO medewerkers (mnr, naam, voorl, functie, gbdatum, maandsal) VALUES (8000, 'DONK', 'A', 'DIRECTEUR', '1985-12-13', 2400.00);
+INSERT INTO afdelingen (anr, naam, locatie, hoofd) VALUES (50, 'ONDERZOEK', 'ZWOLLE', '8000');
+UPDATE medewerkers SET afd = 50 WHERE mnr = 8000;
+
 
 
 -- S1.3. Verbetering op afdelingentabel
@@ -60,6 +64,15 @@ ALTER TABLE medewerkers ADD geslacht char(1) CONSTRAINT m_geslacht_chk CHECK (ge
 --      de nieuwe sequence.
 --   c) Op enig moment gaat het mis. De betreffende kolommen zijn te klein voor
 --      nummers van 3 cijfers. Los dit probleem op.
+
+CREATE SEQUENCE afdeling_anr_seq
+    INCREMENT 10
+	START 50
+	MINVALUE 50
+	MAXVALUE 1000;
+
+ALTER TABLE afdelingen ALTER COLUMN anr SET DEFAULT nextval('afdeling_anr_seq');
+
 
 
 -- S1.4. Adressen
@@ -75,12 +88,33 @@ ALTER TABLE medewerkers ADD geslacht char(1) CONSTRAINT m_geslacht_chk CHECK (ge
 --    telefoon      10 cijfers, uniek
 --    med_mnr       FK, verplicht
 
+CREATE TABLE adressen (
+    postcode char(6) 		PRIMARY KEY,
+    huisnummer varchar(10),
+    ingangsdatum date,
+    einddatum date			CONSTRAINT eind_na_ingang CHECK (einddatum > ingangsdatum),
+    telefoon char(10)  		UNIQUE CONSTRAINT chk_telefoon CHECK (telefoon not like '%[^0-9]%'),
+    med_mnr numeric(4)		NOT NULL,
+    FOREIGN KEY (med_mnr)   REFERENCES medewerkers(mnr)
+);
+
+INSERT INTO adressen (postcode, huisnummer, ingangsdatum, einddatum, telefoon, med_mnr)
+VALUES ('8932ZH', 55, '2000-12-13', '2030-12-13',0612345678, 8000);
+
+
 
 -- S1.5. Commissie
 --
 -- De commissie van een medewerker (kolom `comm`) moet een bedrag bevatten als de medewerker een functie als
 -- 'VERKOPER' heeft, anders moet de commissie NULL zijn. Schrijf hiervoor een beperkingsregel. Gebruik onderstaande
 -- 'illegale' INSERTs om je beperkingsregel te controleren.
+
+
+ALTER TABLE medewerkers
+    ADD CONSTRAINT comm_check
+        CHECK ( (functie != 'VERKOPER' AND comm IS NULL) OR (functie = 'VERKOPER' AND comm IS NOT NULL) );
+
+
 
 INSERT INTO medewerkers (mnr, naam, voorl, functie, chef, gbdatum, maandsal, comm)
 VALUES (8001, 'MULLER', 'TJ', 'TRAINER', 7566, '1982-08-18', 2000, 500);
