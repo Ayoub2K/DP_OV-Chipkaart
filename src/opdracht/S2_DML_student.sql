@@ -30,7 +30,7 @@
 -- S2.1. Vier-daagse cursussen
 --
 -- Geef code en omschrijving van alle cursussen die precies vier dagen duren.
--- DROP VIEW IF EXISTS s2_1; CREATE OR REPLACE VIEW s2_1 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s2_1; CREATE OR REPLACE VIEW s2_1 AS                                                     -- [TEST]
 SELECT code, omschrijving FROM cursussen WHERE lengte = 4;
 
 
@@ -38,22 +38,20 @@ SELECT code, omschrijving FROM cursussen WHERE lengte = 4;
 --
 -- Geef alle informatie van alle medewerkers, gesorteerd op functie,
 -- en per functie op leeftijd (van jong naar oud).
--- DROP VIEW IF EXISTS s2_2; CREATE OR REPLACE VIEW s2_2 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s2_2; CREATE OR REPLACE VIEW s2_2 AS                                                     -- [TEST]
 SELECT * FROM medewerkers ORDER BY functie, gbdatum DESC;
 
 -- S2.3. Door het land
 --
 -- Welke cursussen zijn in Utrecht en/of in Maastricht uitgevoerd? Geef
 -- code en begindatum.
--- DROP VIEW IF EXISTS s2_3; CREATE OR REPLACE VIEW s2_3 AS                                                     -- [TEST]
-
-SELECT code, begindatum FROM cursussen, uitvoeringen WHERE locatie = 'UTRECHT' OR locatie ='MAASTRICHT';
+DROP VIEW IF EXISTS s2_3; CREATE OR REPLACE VIEW s2_3 AS                                                     -- [TEST]
+SELECT cursus, begindatum FROM cursussen, uitvoeringen WHERE locatie = 'UTRECHT' OR locatie ='MAASTRICHT';
 
 -- S2.4. Namen
 --
 -- Geef de naam en voorletters van alle medewerkers, behalve van R. Jansen.
--- DROP VIEW IF EXISTS s2_4; CREATE OR REPLACE VIEW s2_4 AS                                                     -- [TEST]
-
+DROP VIEW IF EXISTS s2_4; CREATE OR REPLACE VIEW s2_4 AS                                                     -- [TEST]
 SELECT naam, voorl FROM medewerkers WHERE naam != 'JANSEN' OR voorl != 'R';
 
 -- S2.5. Nieuwe SQL-cursus
@@ -62,7 +60,7 @@ SELECT naam, voorl FROM medewerkers WHERE naam != 'JANSEN' OR voorl != 'R';
 -- komende 2 maart. De cursus wordt gegeven in Leerdam door Nick Smit.
 -- Voeg deze gegevens toe.
 INSERT INTO uitvoeringen (cursus, begindatum, docent, locatie)
-VALUES ('S02', '2021-03-02', 7902,'LEERDAM')
+VALUES ('S02', '2022-03-02', 7902,'LEERDAM')
 ON CONFLICT DO NOTHING; -- [TEST]
 
 
@@ -81,12 +79,9 @@ ON CONFLICT DO NOTHING;                                                         
 -- We breiden het salarissysteem uit naar zes schalen. Voer een extra schaal in voor mensen die
 -- tussen de 3001 en 4000 euro verdienen. Zij krijgen een toelage van 500 euro.
 INSERT INTO schalen (snr, ondergrens, bovengrens, toelage)
-VALUES (5, 3001.00, 4000.00, 500.00)
+VALUES (6, 3001.00, 4000.00, 500.00)
 ON CONFLICT DO NOTHING;                                                                                        -- [TEST]
 
--- Hierboven stond als voorbeeld een INSERT maar er bestond al een schaal met als beginwaarde 3001.00, die dus geupdate
-
-UPDATE schalen SET snr = 5, ondergrens = 3001.00, bovengrens = 4000.00, toelage = 500.00 WHERE snr = 5;
 
 
 -- S2.8. Nieuwe cursus

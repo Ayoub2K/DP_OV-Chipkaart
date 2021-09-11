@@ -49,8 +49,10 @@ ALTER TABLE medewerkers ADD geslacht char(1) CONSTRAINT m_geslacht_chk CHECK (ge
 -- en valt direct onder de directeur.
 -- Voeg de nieuwe afdeling en de nieuwe medewerker toe aan de database.
 
-INSERT INTO medewerkers (mnr, naam, voorl, functie, gbdatum, maandsal) VALUES (8000, 'DONK', 'A', 'DIRECTEUR', '1985-12-13', 2400.00);
-INSERT INTO afdelingen (anr, naam, locatie, hoofd) VALUES (50, 'ONDERZOEK', 'ZWOLLE', '8000');
+INSERT INTO medewerkers (mnr, naam, voorl, functie, chef, gbdatum, maandsal, geslacht)
+VALUES (8000, 'DONK', 'A', 'DIRECTEUR', 7839, '1985-12-13', 3000.00, 'M');
+INSERT INTO afdelingen (anr, naam, locatie, hoofd)
+VALUES (50, 'ONDERZOEK', 'ZWOLLE', 8000);
 UPDATE medewerkers SET afd = 50 WHERE mnr = 8000;
 
 
@@ -116,11 +118,11 @@ ALTER TABLE medewerkers
 
 
 
-INSERT INTO medewerkers (mnr, naam, voorl, functie, chef, gbdatum, maandsal, comm)
-VALUES (8001, 'MULLER', 'TJ', 'TRAINER', 7566, '1982-08-18', 2000, 500);
-
-INSERT INTO medewerkers (mnr, naam, voorl, functie, chef, gbdatum, maandsal, comm)
-VALUES (8002, 'JANSEN', 'M', 'VERKOPER', 7698, '1981-07-17', 1000, NULL);
+-- INSERT INTO medewerkers (mnr, naam, voorl, functie, chef, gbdatum, maandsal, comm)
+-- VALUES (8001, 'MULLER', 'TJ', 'TRAINER', 7566, '1982-08-18', 2000, 500);
+--
+-- INSERT INTO medewerkers (mnr, naam, voorl, functie, chef, gbdatum, maandsal, comm)
+-- VALUES (8002, 'JANSEN', 'M', 'VERKOPER', 7698, '1981-07-17', 1000, NULL);
 
 
 
