@@ -1,10 +1,12 @@
-package P2and3;
+package ovchip.Adres;
+
+import ovchip.Reiziger.Reiziger;
 
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 
-interface AdresDAO {
+public interface AdresDAO {
     boolean save(Adres adres) throws SQLException;
     boolean update(Adres adres) throws SQLException;
     boolean delete(Adres adres) throws SQLException;

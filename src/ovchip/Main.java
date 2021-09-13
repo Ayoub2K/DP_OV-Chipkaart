@@ -1,4 +1,8 @@
-package P2and3;
+package ovchip;
+import ovchip.Adres.*;
+import ovchip.Reiziger.*;
+import ovchip.OVChipkaart.*;
+
 import java.sql.*;
 import java.text.ParseException;
 import java.util.List;
@@ -9,8 +13,10 @@ public class Main {
     public static void main(String[] args) throws SQLException, ParseException {
         ReizigerDAO RDsql = new ReizigerDAOPsql(getConnection());
         AdresDAO ADsql = new AdresDAOPsql(getConnection());
-        testReizigerDAO(RDsql);
-        testAdresDAO(ADsql, RDsql);
+        OvChipkaartDAO ODsql = new OvChipkaartDAOPsql(getConnection());
+
+//        testReizigerDAO(RDsql);
+//        testAdresDAO(ADsql, RDsql);
         closeConnection();
     }
 

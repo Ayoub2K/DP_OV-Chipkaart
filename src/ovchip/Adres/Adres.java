@@ -1,4 +1,4 @@
-package P2and3;
+package ovchip.Adres;
 
 public class Adres {
     public int adres_id;

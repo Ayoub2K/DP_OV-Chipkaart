@@ -1,4 +1,4 @@
-package P2and3;
+package ovchip.Reiziger;
 
 import java.util.Date;
 

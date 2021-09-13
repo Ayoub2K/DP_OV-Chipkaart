@@ -1,10 +1,10 @@
-package P2and3;
+package ovchip.Reiziger;
 
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 
-interface ReizigerDAO {
+public interface ReizigerDAO {
     boolean save(Reiziger reiziger) throws SQLException;
     boolean update(Reiziger reiziger) throws SQLException;
     boolean delete(Reiziger reiziger) throws SQLException;

@@ -1,4 +1,7 @@
-package P2and3;
+package ovchip.Adres;
+
+import ovchip.Reiziger.Reiziger;
+import ovchip.Reiziger.ReizigerDAO;
 
 import java.sql.*;
 import java.text.ParseException;
