@@ -78,7 +78,30 @@ public class OvChipkaartDAOPsql implements OvChipkaartDAO{
 
     @Override
     public OvChipkaart findByReiziger(Reiziger reiziger) {
-        return null;
+        OvChipkaart ovChipkaart = null;
+        try {
+            Statement myStmt = conn.createStatement();
+            String q ="SELECT * FROM ov_chipkaart WHERE reiziger_id = ?";
+            PreparedStatement pst = conn.prepareStatement(q);
+            pst.setInt(1, reiziger.reiziger_id);
+            ResultSet myRs = pst.executeQuery();
+            while (myRs.next()) {
+                int kaart_nummer = myRs.getInt("kaart_nummer");
+                String geldig_tot = myRs.getString("geldig_tot");
+                int klasse = myRs.getInt("klasse");
+                int saldo = myRs.getInt("saldo");
+                int reiziger_id = myRs.getInt("reiziger_id");
+
+                java.sql.Date sqlGeldig_tot = java.sql.Date.valueOf( geldig_tot );
+
+                ovChipkaart = new OvChipkaart( kaart_nummer, sqlGeldig_tot, klasse, saldo, reiziger_id);
+            }
+
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return ovChipkaart;
     }
 
     @Override
