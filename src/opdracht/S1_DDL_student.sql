@@ -74,6 +74,7 @@ CREATE SEQUENCE afdeling_anr_seq
 	MAXVALUE 1000;
 
 ALTER TABLE afdelingen ALTER COLUMN anr SET DEFAULT nextval('afdeling_anr_seq');
+ALTER TABLE afdelingen ALTER COLUMN anr TYPE numeric(4);
 
 
 
