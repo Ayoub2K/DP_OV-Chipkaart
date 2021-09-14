@@ -61,7 +61,7 @@ SELECT naam, voorl FROM medewerkers WHERE naam != 'JANSEN' OR voorl != 'R';
 -- Voeg deze gegevens toe.
 insert into uitvoeringen
 values ('S02', '2022-03-02', 7369, 'LEERDAM')
-ON CONFLICT DO NOTHING;
+    ON CONFLICT DO NOTHING;
 
 
 

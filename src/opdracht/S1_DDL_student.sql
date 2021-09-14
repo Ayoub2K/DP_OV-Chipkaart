@@ -113,9 +113,9 @@ VALUES ('8932ZH', 55, '2000-12-13', '2030-12-13',0612345678, 8000);
 -- 'illegale' INSERTs om je beperkingsregel te controleren.
 
 
-ALTER TABLE medewerkers
-    ADD CONSTRAINT comm_check
-        CHECK ( (functie != 'VERKOPER' AND comm IS NULL) OR (functie = 'VERKOPER' AND comm IS NOT NULL) );
+    ALTER TABLE medewerkers
+        ADD CONSTRAINT comm_check
+            CHECK ( (functie != 'VERKOPER' AND comm IS NULL) OR (functie = 'VERKOPER' AND comm IS NOT NULL) );
 
 
 
@@ -144,6 +144,8 @@ ORDER BY resultaat;
 
 
 -- Draai alle wijzigingen terug om conflicten in komende opdrachten te voorkomen.
+
+ALTER TABLE afdelingen ALTER COLUMN anr TYPE numeric(2);
 DROP TABLE IF EXISTS adressen;
 UPDATE medewerkers SET afd = NULL WHERE mnr < 7369 OR mnr > 7934;
 UPDATE afdelingen SET hoofd = NULL WHERE anr > 40;
