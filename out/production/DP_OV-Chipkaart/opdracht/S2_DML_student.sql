@@ -59,9 +59,9 @@ SELECT naam, voorl FROM medewerkers WHERE naam != 'JANSEN' OR voorl != 'R';
 -- Er wordt een nieuwe uitvoering gepland voor cursus S02, en wel op de
 -- komende 2 maart. De cursus wordt gegeven in Leerdam door Nick Smit.
 -- Voeg deze gegevens toe.
-INSERT INTO uitvoeringen (cursus, begindatum, docent, locatie)
-VALUES ('S02', '2022-03-02', 7902,'LEERDAM')
-ON CONFLICT DO NOTHING; -- [TEST]
+insert into uitvoeringen
+values ('S02', '2022-03-02', 7369, 'LEERDAM')
+    ON CONFLICT DO NOTHING;
 
 
 

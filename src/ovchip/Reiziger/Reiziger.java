@@ -13,12 +13,17 @@ public class Reiziger {
     public ArrayList<Integer> kaart_nummer;
 
 
-    public Reiziger(int reiziger_id, String voorletters, String tussenvoegsel, String achternaam, java.sql.Date geboortedatum) {
-        this.reiziger_id = reiziger_id;
+
+    public Reiziger(String voorletters, String tussenvoegsel, String achternaam, java.sql.Date geboortedatum) {
         this.voorletters = voorletters;
         this.tussenvoegsel = tussenvoegsel;
         this.achternaam = achternaam;
         this.geboortedatum = geboortedatum;
+    }
+
+    public Reiziger(int reiziger_id, String voorletters, String tussenvoegsel, String achternaam, java.sql.Date geboortedatum) {
+        this(voorletters, tussenvoegsel, achternaam, geboortedatum);
+        this.reiziger_id = reiziger_id;
     }
 
     public int getReiziger_id() {

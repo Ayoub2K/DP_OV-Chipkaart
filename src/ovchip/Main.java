@@ -15,8 +15,8 @@ public class Main {
         AdresDAO ADsql = new AdresDAOPsql(getConnection());
         OvChipkaartDAO ODsql = new OvChipkaartDAOPsql(getConnection());
 
-//        testReizigerDAO(RDsql);
-//        testAdresDAO(ADsql, RDsql);
+        testReizigerDAO(RDsql);
+        testAdresDAO(ADsql, RDsql);
         closeConnection();
     }
 
