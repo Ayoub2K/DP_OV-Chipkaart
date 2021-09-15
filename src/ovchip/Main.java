@@ -16,8 +16,8 @@ public class Main {
         AdresDAO ADsql = new AdresDAOPsql(conn, RDsql);
         OvChipkaartDAO ODsql = new OvChipkaartDAOPsql(conn, RDsql);
 
-        testReizigerDAO(RDsql);
-        testAdresDAO(ADsql, RDsql);
+//        testReizigerDAO(RDsql);
+//        testAdresDAO(ADsql, RDsql);
         testOvChipDAO(ODsql, RDsql);
         closeConnection();
     }
@@ -34,6 +34,7 @@ public class Main {
     }
 
     private static void closeConnection() throws SQLException {
+        System.out.println("\n");
         System.out.println("closing database");
         conn.close();
     }
@@ -128,9 +129,14 @@ public class Main {
         OvChipkaart ovChipkaart = new OvChipkaart(99999, java.sql.Date.valueOf(geldigdatum), 1, 50, Ayoub);
         odao.save(ovChipkaart);
 
+
+        System.out.println("find by reiziger VOOR UPDATE = " + odao.findByReiziger(Ayoub));
+        //update OVChip
+        OvChipkaart ovChipkaartUpdate = new OvChipkaart(99999, java.sql.Date.valueOf(geldigdatum), 2, 50, Ayoub);
+        odao.update(ovChipkaartUpdate);
+
         //find by reiziger
-        System.out.println(Ayoub);
-        System.out.println("find by reiziger = " + odao.findByReiziger(Ayoub));
+        System.out.println("find by reiziger NA UPDATE = " + odao.findByReiziger(Ayoub));
 
         //delete gegevens
 
