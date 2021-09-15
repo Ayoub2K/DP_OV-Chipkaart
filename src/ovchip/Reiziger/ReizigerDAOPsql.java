@@ -107,11 +107,6 @@ public class ReizigerDAOPsql implements ReizigerDAO{
         List<Reiziger> RList = new ArrayList<>();
 
         try {
-//            Statement myStmt = conn.createStatement();
-//            String q ="SELECT * FROM reiziger WHERE geboortedatum = ? ";
-//            PreparedStatement pst = conn.prepareStatement(q);
-//            pst.setString(1, "'"+ datum  + "'");
-//            ResultSet myRs = pst.executeQuery();
 
             Statement myStmt = conn.createStatement();
             ResultSet myRs = myStmt.executeQuery("SELECT * FROM reiziger WHERE geboortedatum = '" + datum + "'");

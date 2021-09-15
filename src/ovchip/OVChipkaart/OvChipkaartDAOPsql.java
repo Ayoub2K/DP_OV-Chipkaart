@@ -12,10 +12,11 @@ import java.util.List;
 public class OvChipkaartDAOPsql implements OvChipkaartDAO{
 
     private Connection conn = null;
-    private ReizigerDAO rdao;
+    private ReizigerDAO rdao = null;
 
-    public OvChipkaartDAOPsql(Connection conn){
+    public OvChipkaartDAOPsql(Connection conn, ReizigerDAO rdao){
         this.conn = conn;
+        this.rdao = rdao;
     }
 
     @Override
@@ -28,7 +29,7 @@ public class OvChipkaartDAOPsql implements OvChipkaartDAO{
             pst.setDate(2, (Date) ovChipkaart.geldig_tot);
             pst.setInt(3, ovChipkaart.klasse);
             pst.setInt(4, ovChipkaart.saldo);
-            pst.setInt(5, ovChipkaart.reiziger_id);
+            pst.setInt(5, ovChipkaart.reiziger.getReiziger_id());
 
             pst.executeUpdate();
             myStmt.close();
@@ -48,7 +49,7 @@ public class OvChipkaartDAOPsql implements OvChipkaartDAO{
             pst.setDate(1, (Date) ovChipkaart.geldig_tot);
             pst.setInt(2, ovChipkaart.klasse);
             pst.setInt(3, ovChipkaart.saldo);
-            pst.setInt(4, ovChipkaart.reiziger_id);
+            pst.setInt(4, ovChipkaart.reiziger.getReiziger_id());
             pst.setInt(5, ovChipkaart.kaart_nummer);
 
             pst.executeUpdate();
@@ -89,12 +90,13 @@ public class OvChipkaartDAOPsql implements OvChipkaartDAO{
                 int kaart_nummer = myRs.getInt("kaart_nummer");
                 String geldig_tot = myRs.getString("geldig_tot");
                 int klasse = myRs.getInt("klasse");
-                int saldo = myRs.getInt("saldo");
+                int saldo = (int) myRs.getDouble("saldo");
                 int reiziger_id = myRs.getInt("reiziger_id");
+
 
                 java.sql.Date sqlGeldig_tot = java.sql.Date.valueOf( geldig_tot );
 
-                ovChipkaart = new OvChipkaart( kaart_nummer, sqlGeldig_tot, klasse, saldo, reiziger_id);
+                ovChipkaart = new OvChipkaart( kaart_nummer, sqlGeldig_tot, klasse, saldo, reiziger);
             }
 
             myStmt.close();
@@ -121,7 +123,9 @@ public class OvChipkaartDAOPsql implements OvChipkaartDAO{
 
             java.sql.Date sqlGeldig_tot = java.sql.Date.valueOf( geldig_tot );
 
-            OvChipkaart ovChipkaart = new OvChipkaart( kaart_nummer, sqlGeldig_tot, klasse, saldo, reiziger_id);
+            Reiziger reiziger = rdao.findById(reiziger_id);
+
+            OvChipkaart ovChipkaart = new OvChipkaart( kaart_nummer, sqlGeldig_tot, klasse, saldo, reiziger);
 
             OList.add(ovChipkaart);
         }

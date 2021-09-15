@@ -1,5 +1,7 @@
 package ovchip.OVChipkaart;
 
+import ovchip.Reiziger.Reiziger;
+
 import java.util.Date;
 
 public class OvChipkaart {
@@ -7,14 +9,14 @@ public class OvChipkaart {
      public Date geldig_tot;
      public int klasse;
      public int saldo;
-     public int reiziger_id;
+     public Reiziger reiziger;
 
-    public OvChipkaart(int kaart_nummer, Date geldig_tot, int klasse, int saldo, int reiziger_id) {
+    public OvChipkaart(int kaart_nummer, Date geldig_tot, int klasse, int saldo, Reiziger reiziger) {
         this.kaart_nummer = kaart_nummer;
         this.geldig_tot = geldig_tot;
         this.klasse = klasse;
         this.saldo = saldo;
-        this.reiziger_id = reiziger_id;
+        this.reiziger = reiziger;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class OvChipkaart {
                 ", geldig_tot=" + geldig_tot +
                 ", klasse=" + klasse +
                 ", saldo=" + saldo +
-                ", reiziger_id=" + reiziger_id +
+                ", reiziger=" + reiziger +
                 '}';
     }
 }

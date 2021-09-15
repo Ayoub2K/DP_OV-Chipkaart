@@ -1,23 +1,25 @@
 package ovchip.Adres;
 
+import ovchip.Reiziger.Reiziger;
+
 public class Adres {
     public int adres_id;
     public String postcode;
     public String huisnummer;
     public String straat;
     public String woonplaats;
-    public int reiziger_id;
+    public Reiziger reiziger;
 
-    public Adres(String postcode, String huisnummer, String straat, String woonplaats, int reiziger_id) {
+    public Adres(String postcode, String huisnummer, String straat, String woonplaats, Reiziger reiziger) {
         this.postcode = postcode;
         this.huisnummer = huisnummer;
         this.straat = straat;
         this.woonplaats = woonplaats;
-        this.reiziger_id = reiziger_id;
+        this.reiziger = reiziger;
     }
 
-    public Adres(int adres_id, String postcode, String huisnummer, String straat, String woonplaats, int reiziger_id) {
-        this(postcode, huisnummer, straat, woonplaats, reiziger_id);
+    public Adres(int adres_id, String postcode, String huisnummer, String straat, String woonplaats, Reiziger reiziger) {
+        this(postcode, huisnummer, straat, woonplaats, reiziger);
         this.adres_id = adres_id;
     }
 
@@ -33,7 +35,7 @@ public class Adres {
                 ", huisnummer='" + huisnummer + '\'' +
                 ", straat='" + straat + '\'' +
                 ", woonplaats='" + woonplaats + '\'' +
-                ", reiziger_id=" + reiziger_id +
+                ", reiziger=" + reiziger +
                 '}';
     }
 }

@@ -11,12 +11,14 @@ public class Main {
     private static Connection conn = null;
 
     public static void main(String[] args) throws SQLException, ParseException {
-        ReizigerDAO RDsql = new ReizigerDAOPsql(getConnection());
-        AdresDAO ADsql = new AdresDAOPsql(getConnection());
-        OvChipkaartDAO ODsql = new OvChipkaartDAOPsql(getConnection());
+        getConnection();
+        ReizigerDAO RDsql = new ReizigerDAOPsql(conn);
+        AdresDAO ADsql = new AdresDAOPsql(conn, RDsql);
+        OvChipkaartDAO ODsql = new OvChipkaartDAOPsql(conn, RDsql);
 
         testReizigerDAO(RDsql);
         testAdresDAO(ADsql, RDsql);
+        testOvChipDAO(ODsql, RDsql);
         closeConnection();
     }
 
@@ -67,10 +69,10 @@ public class Main {
         // findAll
         List<Adres> adresssen = adao.findAll();
         System.out.println("[Test] AdresDAO.findAll() geeft de volgende adressen:");
-        for (Adres a : adresssen) {
+        for (Adres adres : adresssen) {
             System.out.println("---");
-            System.out.println(a);
-            System.out.println(rdao.findById(a.reiziger_id));
+            System.out.println(adres);
+            System.out.println(rdao.findById(adres.reiziger.reiziger_id));
         }
         System.out.println("---");
 
@@ -79,10 +81,10 @@ public class Main {
         System.out.println("find by reiziger = " + adao.findByReiziger(reiziger));
 
         // Save & Delete & update
-        Adres mijnAdres = new Adres(32, "2802HB", "633", "K.w.Weg", "Gouda", 77);
+        Adres mijnAdres = new Adres(32, "2802HB", "633", "K.w.Weg", "Gouda", reiziger);
 
 
-        Adres newAdres = new Adres(32, "2802HB", "32", "K.w.Weg", "Gouda", 77);
+        Adres newAdres = new Adres(32, "2802HB", "32", "K.w.Weg", "Gouda", reiziger);
         adao.update(newAdres);
         System.out.println("na update = " + adao.findByReiziger(reiziger));
 
@@ -100,6 +102,40 @@ public class Main {
         rdao.delete(rdao.findById(77));
 
 
+    }
+
+    private static void testOvChipDAO(OvChipkaartDAO odao, ReizigerDAO rdao) throws SQLException, ParseException {
+        System.out.println("\n---------- Test OvChipkaartDAO -------------");
+
+        // findAll
+        List<OvChipkaart> OvChipkaarten = odao.findAll();
+        System.out.println("[Test] OvChipkaartDAO.findAll() geeft de volgende OvChipkaarten:");
+        for (OvChipkaart ovChipkaart : OvChipkaarten) {
+            System.out.println("---");
+            System.out.println(ovChipkaart);
+            System.out.println(rdao.findById(ovChipkaart.reiziger.reiziger_id));
+        }
+        System.out.println("---");
+
+
+        //create reiziger
+        String gbdatum = "2000-05-17";
+        Reiziger Ayoub = new Reiziger(99, "A", "", "Aarkoub", java.sql.Date.valueOf(gbdatum));
+        rdao.save(Ayoub);
+
+        //create OVChip
+        String geldigdatum = "2021-12-03";
+        OvChipkaart ovChipkaart = new OvChipkaart(99999, java.sql.Date.valueOf(geldigdatum), 1, 50, Ayoub);
+        odao.save(ovChipkaart);
+
+        //find by reiziger
+        System.out.println(Ayoub);
+        System.out.println("find by reiziger = " + odao.findByReiziger(Ayoub));
+
+        //delete gegevens
+
+        odao.delete(ovChipkaart);
+        rdao.delete(Ayoub);
     }
 
 }

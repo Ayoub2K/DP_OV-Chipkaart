@@ -1,5 +1,8 @@
 package ovchip.Reiziger;
 
+import ovchip.Adres.Adres;
+import ovchip.OVChipkaart.OvChipkaart;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -9,8 +12,8 @@ public class Reiziger {
     public String tussenvoegsel;
     public String achternaam;
     public Date geboortedatum;
-    public int adres_id;
-    public ArrayList<Integer> kaart_nummer;
+    public Adres adres;
+    public ArrayList<OvChipkaart> ovChipkaarten;
 
 
 
