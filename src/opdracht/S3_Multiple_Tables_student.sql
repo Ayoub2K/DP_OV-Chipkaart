@@ -36,11 +36,12 @@ SELECT c.code, u.begindatum, c.lengte, m.naam FROM uitvoeringen u, medewerkers m
 -- S3.2.
 -- Geef in twee kolommen naast elkaar de achternaam van elke cursist (`cursist`)
 -- van alle S02-cursussen, met de achternaam van zijn cursusdocent (`docent`).
--- DROP VIEW IF EXISTS s3_2; CREATE OR REPLACE VIEW s3_2 AS                                                     -- [TEST]
-SELECT m.naam FROM inschrijvingen i, medewerkers m WHERE cursus = 'S02' AND m.mnr = i.cursist;
-SELECT m.naam FROM  uitvoeringen u, medewerkers m WHERE  u.cursus='S02' AND u.docent = m.mnr;
-
-SELECT i.cursist, u.docent FROM inschrijvingen i,uitvoeringen u, medewerkers m WHERE i.cursus = 'S02' AND m.mnr = i.cursist AND u.docent = m.mnr;
+DROP VIEW IF EXISTS s3_2; CREATE OR REPLACE VIEW s3_2 AS                                                     -- [TEST]
+SELECT crst.naam cursist, dcnt.naam docent
+FROM medewerkers crst
+         INNER JOIN inschrijvingen i ON crst.mnr = i.cursist and i.cursus = 'S02'
+         INNER JOIN uitvoeringen u ON i.begindatum = u.begindatum and u.cursus = i.cursus
+         INNER JOIN medewerkers dcnt ON dcnt.mnr = u.docent;
 
 -- S3.3.
 -- Geef elke afdeling (`afdeling`) met de naam van het hoofd van die
