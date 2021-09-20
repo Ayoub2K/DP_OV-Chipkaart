@@ -81,7 +81,10 @@ GROUP BY cursus;
 -- jongste medewerker (`verschil`) en bepaal de gemiddelde leeftijd van
 -- de medewerkers (`gemiddeld`).
 -- Je mag hierbij aannemen dat elk jaar 365 dagen heeft.
--- DROP VIEW IF EXISTS s4_6; CREATE OR REPLACE VIEW s4_6 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s4_6; CREATE OR REPLACE VIEW s4_6 AS                                                     -- [TEST]
+SELECT (MAX(EXTRACT(YEAR from AGE(NOW(), gbdatum))) - MIN(EXTRACT(YEAR from AGE(NOW(), gbdatum)))) as "verschil",
+       AVG(EXTRACT(YEAR from AGE(NOW(), gbdatum))) as "gemiddeld"
+FROM medewerkers;
 
 
 -- S4.7. 
@@ -89,7 +92,8 @@ GROUP BY cursus;
 -- er werkt (`aantal_medewerkers`), de gemiddelde commissie die ze
 -- krijgen (`commissie_medewerkers`), en hoeveel dat gemiddeld
 -- per verkoper is (`commissie_verkopers`).
--- DROP VIEW IF EXISTS s4_7; CREATE OR REPLACE VIEW s4_7 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s4_7; CREATE OR REPLACE VIEW s4_7 AS                                                     -- [TEST]
+select count(*) as aantal_medewerkers, sum(comm)/count(*) as commissie_medewerkers , avg(comm) as commissie_verkopers from medewerkers
 
 
 
