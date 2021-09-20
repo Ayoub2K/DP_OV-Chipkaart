@@ -35,19 +35,30 @@ SELECT mnr, functie, gbdatum FROM medewerkers WHERE gbdatum <= '1980-01-01' AND 
 
 -- S4.2. 
 -- Geef de naam van de medewerkers met een tussenvoegsel (b.v. 'van der').
--- DROP VIEW IF EXISTS s4_2; CREATE OR REPLACE VIEW s4_2 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s4_2; CREATE OR REPLACE VIEW s4_2 AS                                                     -- [TEST]
+select replace(naam,' ',' ') from medewerkers
+where naam like '% %'
 
 
 -- S4.3. 
 -- Geef nu code, begindatum en aantal inschrijvingen (`aantal_inschrijvingen`) van alle
 -- cursusuitvoeringen in 2019 met minstens drie inschrijvingen.
--- DROP VIEW IF EXISTS s4_3; CREATE OR REPLACE VIEW s4_3 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s4_3; CREATE OR REPLACE VIEW s4_3 AS                                                     -- [TEST]
+SELECT cursus, begindatum , COUNT(cursus) AS aantal_inschrijvingen
+FROM inschrijvingen
+WHERE begindatum >= '2019-01-01' AND  begindatum < '2020-01-01'
+GROUP BY cursus, begindatum HAVING COUNT(cursus) >= 3;
 
 
 -- S4.4. 
 -- Welke medewerkers hebben een bepaalde cursus meer dan één keer gevolgd?
 -- Geef medewerkernummer en cursuscode.
--- DROP VIEW IF EXISTS s4_4; CREATE OR REPLACE VIEW s4_4 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s4_4; CREATE OR REPLACE VIEW s4_4 AS                                                     -- [TEST]
+SELECT cursist, cursus
+FROM medewerkers m
+         INNER JOIN inschrijvingen i
+                    ON m.mnr = i.cursist
+GROUP BY cursist, cursus HAVING COUNT(cursist) > 1;
 
 
 -- S4.5. 
@@ -59,7 +70,10 @@ SELECT mnr, functie, gbdatum FROM medewerkers WHERE gbdatum <= '1980-01-01' AND 
 --   ERM    | 1 
 --   JAV    | 4 
 --   OAG    | 2 
--- DROP VIEW IF EXISTS s4_5; CREATE OR REPLACE VIEW s4_5 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s4_5; CREATE OR REPLACE VIEW s4_5 AS
+SELECT cursus, COUNT(cursus) AS aantal
+FROM uitvoeringen
+GROUP BY cursus;
 
 
 -- S4.6. 
