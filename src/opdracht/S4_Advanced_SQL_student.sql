@@ -93,7 +93,7 @@ FROM medewerkers;
 -- krijgen (`commissie_medewerkers`), en hoeveel dat gemiddeld
 -- per verkoper is (`commissie_verkopers`).
 DROP VIEW IF EXISTS s4_7; CREATE OR REPLACE VIEW s4_7 AS                                                     -- [TEST]
-select count(*) as aantal_medewerkers, sum(comm)/count(*) as commissie_medewerkers , avg(comm) as commissie_verkopers from medewerkers
+select count(*) as aantal_medewerkers, sum(comm)/count(*) as commissie_medewerkers , avg(comm) as commissie_verkopers from medewerkers;
 
 
 
