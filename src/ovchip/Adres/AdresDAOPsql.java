@@ -109,27 +109,30 @@ public class AdresDAOPsql implements AdresDAO {
     public List<Adres> findAll() throws SQLException, ParseException {
 
         List<Adres> AList = new ArrayList<>();
+        try {
+            Statement myStmt = conn.createStatement();
+            ResultSet myRs = myStmt.executeQuery("SELECT * from adres");
 
-        Statement myStmt = conn.createStatement();
-        ResultSet myRs = myStmt.executeQuery("SELECT * from adres");
-
-        while (myRs.next()) {
-            int adres_id = myRs.getInt("adres_id");
-            String postcode = myRs.getString("postcode");
-            String huisnummer = myRs.getString("huisnummer");
-            String straat = myRs.getString("straat");
-            String woonplaats = myRs.getString("woonplaats");
-            int reiziger_id = myRs.getInt("reiziger_id");
+            while (myRs.next()) {
+                int adres_id = myRs.getInt("adres_id");
+                String postcode = myRs.getString("postcode");
+                String huisnummer = myRs.getString("huisnummer");
+                String straat = myRs.getString("straat");
+                String woonplaats = myRs.getString("woonplaats");
+                int reiziger_id = myRs.getInt("reiziger_id");
 
 
-            Reiziger reiziger = rdao.findById(reiziger_id);
+                Reiziger reiziger = rdao.findById(reiziger_id);
 
-            Adres adres = new Adres(adres_id, postcode, huisnummer, straat, woonplaats, reiziger);
+                Adres adres = new Adres(adres_id, postcode, huisnummer, straat, woonplaats, reiziger);
 
-            AList.add(adres);
+                AList.add(adres);
+            }
+
+            myStmt.close();
+        }catch (SQLException ex) {
+            ex.printStackTrace();
         }
-
-        myStmt.close();
         return AList;
     }
 }

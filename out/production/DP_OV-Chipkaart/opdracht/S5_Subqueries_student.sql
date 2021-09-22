@@ -31,19 +31,31 @@
 -- S5.1.
 -- Welke medewerkers hebben zowel de Java als de XML cursus
 -- gevolgd? Geef hun personeelsnummers.
--- DROP VIEW IF EXISTS s5_1; CREATE OR REPLACE VIEW s5_1 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s5_1; CREATE OR REPLACE VIEW s5_1 AS                                                     -- [TEST]
+select il.cursist
+from inschrijvingen il
+         inner join inschrijvingen ir
+                    on il.cursist=ir.cursist
+where il.cursus = 'JAV' AND ir.cursus = 'XML';
 
 
 -- S5.2.
 -- Geef de nummers van alle medewerkers die niet aan de afdeling 'OPLEIDINGEN'
 -- zijn verbonden.
--- DROP VIEW IF EXISTS s5_2; CREATE OR REPLACE VIEW s5_2 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s5_2; CREATE OR REPLACE VIEW s5_2 AS                                                     -- [TEST]
+select mnr from medewerkers where afd != 20;
 
 
 -- S5.3.
 -- Geef de nummers van alle medewerkers die de Java-cursus niet hebben
 -- gevolgd.
 -- DROP VIEW IF EXISTS s5_3; CREATE OR REPLACE VIEW s5_3 AS                                                     -- [TEST]
+select mnr
+from medewerkers m
+         inner join inschrijvingen i
+                    on m.mnr=i.cursist
+where i.cursus !='JAV'
+group by mnr
 
 
 -- S5.4.

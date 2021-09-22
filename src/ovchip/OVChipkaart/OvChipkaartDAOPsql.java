@@ -110,7 +110,7 @@ public class OvChipkaartDAOPsql implements OvChipkaartDAO{
     public List<OvChipkaart> findAll() throws SQLException, ParseException {
 
         List<OvChipkaart> OList = new ArrayList<>();
-
+        try {
         Statement myStmt = conn.createStatement();
         ResultSet myRs = myStmt.executeQuery("SELECT * from ov_chipkaart");
 
@@ -131,6 +131,9 @@ public class OvChipkaartDAOPsql implements OvChipkaartDAO{
         }
 
         myStmt.close();
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }
         return OList;
     }
 }
