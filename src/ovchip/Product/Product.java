@@ -2,12 +2,14 @@ package ovchip.Product;
 
 import ovchip.OVChipkaart.OvChipkaart;
 
+import java.util.ArrayList;
+
 public class Product {
     public int product_nummer;
     public String naam;
     public String beschijving;
     public double prijs;
-    public OvChipkaart ovChipkaart;
+    public ArrayList<OvChipkaart> OvChipkaarten;
 
     public Product( String naam, String beschijving, double prijs) {
         this.naam = naam;
@@ -18,6 +20,14 @@ public class Product {
     public Product(int product_nummer, String naam, String beschijving, double prijs) {
         this(naam, beschijving, prijs);
         this.product_nummer = product_nummer;
+    }
+
+    public void addOvChipkaarten(OvChipkaart ovChipkaart) {
+        OvChipkaarten.add(ovChipkaart);
+    }
+
+    public void removeOvChipkaarten(OvChipkaart ovChipkaart) {
+        OvChipkaarten.remove(ovChipkaart);
     }
 
     @Override

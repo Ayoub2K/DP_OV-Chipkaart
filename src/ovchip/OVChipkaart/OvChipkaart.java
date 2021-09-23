@@ -3,6 +3,7 @@ package ovchip.OVChipkaart;
 import ovchip.Product.Product;
 import ovchip.Reiziger.Reiziger;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class OvChipkaart {
@@ -11,7 +12,7 @@ public class OvChipkaart {
      public int klasse;
      public int saldo;
      public Reiziger reiziger;
-     public Product product;
+     public ArrayList<Product> producten;
 
     public OvChipkaart(int kaart_nummer, Date geldig_tot, int klasse, int saldo, Reiziger reiziger) {
         this.kaart_nummer = kaart_nummer;
@@ -19,6 +20,14 @@ public class OvChipkaart {
         this.klasse = klasse;
         this.saldo = saldo;
         this.reiziger = reiziger;
+    }
+
+    public void addProduct(Product product) {
+        producten.add(product);
+    }
+
+    public void removeProduct(Product product) {
+        producten.remove(product);
     }
 
     @Override
