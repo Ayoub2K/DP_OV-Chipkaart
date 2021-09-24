@@ -69,19 +69,29 @@ group by mnr
 -- S5.5.
 -- Geef cursuscode en begindatum van alle uitvoeringen van programmeercursussen
 -- ('BLD') in 2020.
--- DROP VIEW IF EXISTS s5_5; CREATE OR REPLACE VIEW s5_5 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s5_5; CREATE OR REPLACE VIEW s5_5 AS                                                     -- [TEST]
+select cursus, begindatum from uitvoeringen u, cursussen c where u.cursus = c.code and EXTRACT(YEAR FROM begindatum)= '2020' and  c.type = 'BLD';
 
 
 -- S5.6.
 -- Geef van alle cursusuitvoeringen: de cursuscode, de begindatum en het
 -- aantal inschrijvingen (`aantal_inschrijvingen`). Sorteer op begindatum.
--- DROP VIEW IF EXISTS s5_6; CREATE OR REPLACE VIEW s5_6 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s5_6; CREATE OR REPLACE VIEW s5_6 AS                                                     -- [TEST]
+select u.cursus, u.begindatum, count(*) filter (where cursist is not null)
+from inschrijvingen i right join uitvoeringen u on (i.cursus = u.cursus and i.begindatum = u.begindatum)
+group by u.cursus, u.begindatum
+order by u.begindatum;
 
 
 -- S5.7.
 -- Geef voorletter(s) en achternaam van alle trainers die ooit tijdens een
 -- algemene ('ALG') cursus hun eigen chef als cursist hebben gehad.
--- DROP VIEW IF EXISTS s5_7; CREATE OR REPLACE VIEW s5_7 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s5_7; CREATE OR REPLACE VIEW s5_7 AS                                                     -- [TEST]
+select DISTINCT voorl, naam from uitvoeringen u
+                                     inner join inschrijvingen i on u.cursus = i.cursus and u.begindatum = i.begindatum
+                                     inner join medewerkers m on u.docent = m.mnr
+where u.cursus in (select code from cursussen where type = 'ALG')
+  and cursist = chef;
 
 
 -- S5.8.
