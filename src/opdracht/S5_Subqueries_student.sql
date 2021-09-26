@@ -96,7 +96,11 @@ where u.cursus in (select code from cursussen where type = 'ALG')
 
 -- S5.8.
 -- Geef de naam van de medewerkers die nog nooit een cursus hebben gegeven.
--- DROP VIEW IF EXISTS s5_8; CREATE OR REPLACE VIEW s5_8 AS                                                     -- [TEST]
+DROP VIEW IF EXISTS s5_8; CREATE OR REPLACE VIEW s5_8 AS                                                     -- [TEST]
+select m.naam
+from medewerkers m full outer join
+     uitvoeringen u on m.mnr = u.docent
+where u.docent IS NULL AND m.mnr IS NOT NULL;
 
 
 
