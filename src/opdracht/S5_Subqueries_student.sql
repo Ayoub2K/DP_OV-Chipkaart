@@ -52,7 +52,7 @@ select mnr from medewerkers where afd != 20;
 DROP VIEW IF EXISTS s5_3; CREATE OR REPLACE VIEW s5_3 AS                                                     -- [TEST]
 select distinct mnr
 from medewerkers
-where mnr not in (select cursist from inschrijvingen where cursus = 'JAV')
+where mnr not in (select cursist from inschrijvingen where cursus = 'JAV');
 
 
 
