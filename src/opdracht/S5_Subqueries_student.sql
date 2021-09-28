@@ -49,21 +49,25 @@ select mnr from medewerkers where afd != 20;
 -- S5.3.
 -- Geef de nummers van alle medewerkers die de Java-cursus niet hebben
 -- gevolgd.
--- DROP VIEW IF EXISTS s5_3; CREATE OR REPLACE VIEW s5_3 AS                                                     -- [TEST]
-select mnr
-from medewerkers m
-         inner join inschrijvingen i
-                    on m.mnr=i.cursist
-where i.cursus !='JAV'
-group by mnr
+DROP VIEW IF EXISTS s5_3; CREATE OR REPLACE VIEW s5_3 AS                                                     -- [TEST]
+select distinct mnr
+from medewerkers
+where mnr not in (select cursist from inschrijvingen where cursus = 'JAV')
+
 
 
 -- S5.4.
 -- a. Welke medewerkers hebben ondergeschikten? Geef hun naam.
--- DROP VIEW IF EXISTS s5_4a; CREATE OR REPLACE VIEW s5_4a AS                                                   -- [TEST]
+DROP VIEW IF EXISTS s5_4a; CREATE OR REPLACE VIEW s5_4a AS                                                   -- [TEST]
+select naam
+from medewerkers
+where mnr  in (select chef from medewerkers where chef is not null);
 
 -- b. En welke medewerkers hebben geen ondergeschikten? Geef wederom de naam.
--- DROP VIEW IF EXISTS s5_4b; CREATE OR REPLACE VIEW s5_4b AS                                                   -- [TEST]
+DROP VIEW IF EXISTS s5_4b; CREATE OR REPLACE VIEW s5_4b AS                                                   -- [TEST]
+select naam
+from medewerkers
+where mnr not in (select chef from medewerkers where chef is not null);
 
 
 -- S5.5.
