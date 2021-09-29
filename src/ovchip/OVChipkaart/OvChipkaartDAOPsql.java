@@ -1,6 +1,7 @@
 package ovchip.OVChipkaart;
 
 import ovchip.Adres.Adres;
+import ovchip.Product.Product;
 import ovchip.Reiziger.Reiziger;
 import ovchip.Reiziger.ReizigerDAO;
 
@@ -77,6 +78,34 @@ public class OvChipkaartDAOPsql implements OvChipkaartDAO{
         return false;
     }
 
+    public OvChipkaart findbyId(int id) throws SQLException {
+        OvChipkaart ovChipkaart = null;
+        try {
+            Statement myStmt = conn.createStatement();
+            String q ="SELECT * FROM ov_chipkaart WHERE kaart_nummer = ?";
+            PreparedStatement pst = conn.prepareStatement(q);
+            pst.setInt(1, id);
+            ResultSet myRs = pst.executeQuery();
+            while (myRs.next()) {
+                int kaart_nummer = myRs.getInt("kaart_nummer");
+                String geldig_tot = myRs.getString("geldig_tot");
+                int klasse = myRs.getInt("klasse");
+                int saldo = (int) myRs.getDouble("saldo");
+                int reiziger_id = myRs.getInt("reiziger_id");
+
+
+                java.sql.Date sqlGeldig_tot = java.sql.Date.valueOf( geldig_tot );
+
+                ovChipkaart = new OvChipkaart( kaart_nummer, sqlGeldig_tot, klasse, saldo, reiziger_id);
+            }
+
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return ovChipkaart;
+    };
+
     @Override
     public OvChipkaart findByReiziger(Reiziger reiziger) {
         OvChipkaart ovChipkaart = null;
@@ -104,6 +133,36 @@ public class OvChipkaartDAOPsql implements OvChipkaartDAO{
             ex.printStackTrace();
         }
         return ovChipkaart;
+    }
+
+    @Override
+    public List<OvChipkaart> findByProduct(Product product) {
+        List<OvChipkaart> ovChipkaarten = new ArrayList<>();
+        try {
+            Statement myStmt = conn.createStatement();
+            String q ="select * from ov_chipkaart where kaart_nummer in (select ov_chipkaart_product.kaart_nummer from ov_chipkaart_product where product_nummer = ?)";
+            PreparedStatement pst = conn.prepareStatement(q);
+            pst.setInt(1, product.product_nummer);
+            ResultSet myRs = pst.executeQuery();
+            while (myRs.next()) {
+                int kaart_nummer = myRs.getInt("kaart_nummer");
+                String geldig_tot = myRs.getString("geldig_tot");
+                int klasse = myRs.getInt("klasse");
+                int saldo = (int) myRs.getDouble("saldo");
+                int reiziger_id = myRs.getInt("reiziger_id");
+
+
+                java.sql.Date sqlGeldig_tot = java.sql.Date.valueOf( geldig_tot );
+
+                OvChipkaart ovChipkaart = new OvChipkaart( kaart_nummer, sqlGeldig_tot, klasse, saldo, reiziger_id);
+                ovChipkaarten.add(ovChipkaart);
+            }
+
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return ovChipkaarten;
     }
 
     @Override

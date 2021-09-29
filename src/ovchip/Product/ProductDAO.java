@@ -11,6 +11,6 @@ public interface ProductDAO {
     boolean save(Product product) throws SQLException;
     boolean update(Product product) throws SQLException;
     boolean delete(Product product) throws SQLException;
-    List<Product> findByOVChipkaart(OvChipkaart ovChipkaart);
+    List<Product> findByOVChipkaart(OvChipkaart ovChipkaart) throws ParseException, SQLException;
     List<Product> findAll() throws SQLException, ParseException;
 }

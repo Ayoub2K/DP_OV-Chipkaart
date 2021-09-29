@@ -7,23 +7,34 @@ import java.util.ArrayList;
 public class Product {
     public int product_nummer;
     public String naam;
-    public String beschijving;
+    public String beschrijving;
     public double prijs;
     public ArrayList<OvChipkaart> OvChipkaarten;
+    public ArrayList<Integer> kaart_nummers;
 
-    public Product( String naam, String beschijving, double prijs) {
+    public Product( String naam, String beschrijving, double prijs) {
         this.naam = naam;
-        this.beschijving = beschijving;
+        this.beschrijving = beschrijving;
         this.prijs = prijs;
+        this.OvChipkaarten = new ArrayList<>();
+        this.kaart_nummers = new ArrayList<>();
     }
 
-    public Product(int product_nummer, String naam, String beschijving, double prijs) {
-        this(naam, beschijving, prijs);
+    public Product(int product_nummer, String naam, String beschrijving, double prijs) {
+        this(naam, beschrijving, prijs);
         this.product_nummer = product_nummer;
     }
 
-    public void addOvChipkaarten(OvChipkaart ovChipkaart) {
-        OvChipkaarten.add(ovChipkaart);
+    public void addOvChipkaarten(int kaart_nummer) {
+        kaart_nummers.add(kaart_nummer);
+    }
+
+    public ArrayList<OvChipkaart> getOvChipkaarten() {
+        return OvChipkaarten;
+    }
+
+    public int getProduct_nummer() {
+        return product_nummer;
     }
 
     public void removeOvChipkaarten(OvChipkaart ovChipkaart) {
@@ -35,7 +46,7 @@ public class Product {
         return "Product{" +
                 "product_nummer=" + product_nummer +
                 ", naam='" + naam + '\'' +
-                ", beschijving='" + beschijving + '\'' +
+                ", beschrijving='" + beschrijving + '\'' +
                 ", prijs=" + prijs +
                 '}';
     }

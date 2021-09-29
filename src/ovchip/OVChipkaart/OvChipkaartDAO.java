@@ -1,5 +1,6 @@
 package ovchip.OVChipkaart;
 
+import ovchip.Product.Product;
 import ovchip.Reiziger.Reiziger;
 
 import java.sql.SQLException;
@@ -12,5 +13,8 @@ public interface OvChipkaartDAO {
     boolean update(OvChipkaart ovChipkaart) throws SQLException;
     boolean delete(OvChipkaart ovChipkaart) throws SQLException;
     OvChipkaart findByReiziger(Reiziger reiziger);
+    List<OvChipkaart> findByProduct(Product product);
     List<OvChipkaart> findAll() throws SQLException, ParseException;
+
+    OvChipkaart findbyId(int i) throws SQLException;
 }

@@ -1,5 +1,8 @@
 package ovchip;
 import ovchip.Adres.*;
+import ovchip.Product.Product;
+import ovchip.Product.ProductDAO;
+import ovchip.Product.ProductDAOPsql;
 import ovchip.Reiziger.*;
 import ovchip.OVChipkaart.*;
 
@@ -15,10 +18,12 @@ public class Main {
         ReizigerDAO RDsql = new ReizigerDAOPsql(conn);
         AdresDAO ADsql = new AdresDAOPsql(conn, RDsql);
         OvChipkaartDAO ODsql = new OvChipkaartDAOPsql(conn, RDsql);
+        ProductDAO PDsql = new ProductDAOPsql(conn, ODsql);
 
-        testReizigerDAO(RDsql);
-        testAdresDAO(ADsql, RDsql);
-        testOvChipDAO(ODsql, RDsql);
+        //testReizigerDAO(RDsql);
+        //testAdresDAO(ADsql, RDsql);
+        //testOvChipDAO(ODsql, RDsql);
+        testProductDAO(PDsql, ODsql, RDsql);
         closeConnection();
     }
 
@@ -139,9 +144,46 @@ public class Main {
         System.out.println("find by reiziger NA UPDATE = " + odao.findByReiziger(Ayoub));
 
         //delete gegevens
-
         odao.delete(ovChipkaart);
         rdao.delete(Ayoub);
+    }
+
+    private static void testProductDAO(ProductDAO pdao, OvChipkaartDAO odao, ReizigerDAO rdao) throws SQLException, ParseException{
+
+        //create reiziger
+        String gbdatum = "2000-05-17";
+        Reiziger Ayoubtest = new Reiziger(654, "A", "", "Aarkoub", java.sql.Date.valueOf(gbdatum));
+        rdao.save(Ayoubtest);
+        //create OVChip
+        String geldigdatum = "2021-12-03";
+        OvChipkaart testovChipkaart = new OvChipkaart(88888, java.sql.Date.valueOf(geldigdatum), 1, 50, Ayoubtest);
+        odao.save(testovChipkaart);
+
+        //create Product
+        Product testProduct = new Product(9, "testproduct", "beschrijving", 20);
+        pdao.save(testProduct);
+
+        System.out.println("\n---------- Test ProductDAO -------------");
+        // findAll
+        List<Product> Producten = pdao.findAll();
+        System.out.println("[Test] ProductDAO.findAll() geeft de volgende Producten:");
+        for (Product product : Producten) {
+            System.out.println("---");
+            System.out.println(product);
+            List<OvChipkaart> ovChipkaarten = odao.findByProduct(product);
+            for (OvChipkaart ovChipkaart: ovChipkaarten){
+                System.out.println(ovChipkaart);
+            }
+        }
+
+        System.out.println("find by ovChipkaart = " + pdao.findByOVChipkaart(odao.findbyId(35283)));
+
+        System.out.println("---");
+
+        //delete gegevens
+        odao.delete(testovChipkaart);
+        rdao.delete(Ayoubtest);
+        pdao.delete(testProduct);
     }
 
 }
