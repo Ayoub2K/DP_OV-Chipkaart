@@ -22,6 +22,7 @@ public class OvChipkaart {
         this.klasse = klasse;
         this.saldo = saldo;
         this.reiziger = reiziger;
+        this.producten = new ArrayList<>();
     }
 
     public OvChipkaart(int kaart_nummer, Date geldig_tot, int klasse, int saldo, int reiziger_id) {
@@ -30,6 +31,10 @@ public class OvChipkaart {
         this.klasse = klasse;
         this.saldo = saldo;
         this.reiziger_id = reiziger_id;
+    }
+
+    public ArrayList<Product> getProducten() {
+        return producten;
     }
 
     public void addProduct(Product product) {

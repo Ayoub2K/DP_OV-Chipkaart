@@ -20,9 +20,9 @@ public class Main {
         OvChipkaartDAO ODsql = new OvChipkaartDAOPsql(conn, RDsql);
         ProductDAO PDsql = new ProductDAOPsql(conn, ODsql);
 
-        //testReizigerDAO(RDsql);
-        //testAdresDAO(ADsql, RDsql);
-        //testOvChipDAO(ODsql, RDsql);
+        testReizigerDAO(RDsql);
+        testAdresDAO(ADsql, RDsql);
+        testOvChipDAO(ODsql, RDsql);
         testProductDAO(PDsql, ODsql, RDsql);
         closeConnection();
     }

@@ -32,6 +32,15 @@ public class OvChipkaartDAOPsql implements OvChipkaartDAO{
             pst.setInt(4, ovChipkaart.saldo);
             pst.setInt(5, ovChipkaart.reiziger.getReiziger_id());
 
+            for (Product product : ovChipkaart.getProducten()){
+                String q2 = "INSERT INTO ov_chipkaart_product (kaart_nummer, product_nummer) VALUES (?, ?)";
+                PreparedStatement pst2 = conn.prepareStatement(q2);
+
+                pst2.setInt(1, product.getProduct_nummer());
+                pst2.setInt(2, ovChipkaart.getKaart_nummer());
+                pst2.executeUpdate();
+            }
+
             pst.executeUpdate();
             myStmt.close();
             return true;
@@ -66,6 +75,16 @@ public class OvChipkaartDAOPsql implements OvChipkaartDAO{
     public boolean delete(OvChipkaart ovChipkaart) throws SQLException {
         try {
             Statement myStmt = conn.createStatement();
+
+            for (Product product : ovChipkaart.getProducten()){
+                String q2 = "DELETE FROM ov_chipkaart_product where kaart_nummer = ? and product_nummer = ?";
+                PreparedStatement pst2 = conn.prepareStatement(q2);
+                pst2.setInt(1, ovChipkaart.getKaart_nummer());
+                pst2.setInt(2, product.getProduct_nummer());
+
+                pst2.executeUpdate();
+            }
+
             String q ="DELETE FROM ov_chipkaart WHERE kaart_nummer=? ";
             PreparedStatement pst = conn.prepareStatement(q);
             pst.setInt(1, ovChipkaart.kaart_nummer);
