@@ -107,6 +107,7 @@ public class ProductDAOPsql implements ProductDAO{
             ResultSet myRs = pst.executeQuery();
 
             while (myRs.next()) {
+
                 int product_nummer = myRs.getInt("product_nummer");
                 String naam = myRs.getString("naam");
                 String beschrijving = myRs.getString("beschrijving");
