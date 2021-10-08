@@ -30,7 +30,7 @@
 -- Geef nummer, functie en geboortedatum van alle medewerkers die vóór 1980
 -- geboren zijn, en trainer of verkoper zijn.
 DROP VIEW IF EXISTS s4_1; CREATE OR REPLACE VIEW s4_1 AS                                                     -- [TEST]
-SELECT mnr, functie, gbdatum FROM medewerkers WHERE gbdatum <= '1980-01-01' AND (functie = 'TRAINER' OR  functie = 'VERKOPER');
+SELECT mnr, functie, gbdatum FROM medewerkers WHERE gbdatum <= to_do('1980-01-01', 'yyyy-mm-dd') AND (functie = 'TRAINER' OR  functie = 'VERKOPER');
 
 
 -- S4.2. 
@@ -46,7 +46,7 @@ where naam like '% %';
 DROP VIEW IF EXISTS s4_3; CREATE OR REPLACE VIEW s4_3 AS                                                     -- [TEST]
 SELECT cursus, begindatum , COUNT(cursus) AS aantal_inschrijvingen
 FROM inschrijvingen
-WHERE begindatum >= '2019-01-01' AND  begindatum < '2020-01-01'
+WHERE begindatum >= to_date ('2019-01-01', 'yyyy-mm-dd') AND  begindatum < to_date('2020-01-01', 'yyyy-mm-dd')
 GROUP BY cursus, begindatum HAVING COUNT(cursus) >= 3;
 
 

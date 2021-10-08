@@ -12,6 +12,7 @@
 --
 -- 1. Maak een view met de naam "deelnemers" waarmee je de volgende gegevens uit de tabellen inschrijvingen en uitvoering combineert:
 --    inschrijvingen.cursist, inschrijvingen.cursus, inschrijvingen.begindatum, uitvoeringen.docent, uitvoeringen.locatie
+select * from
 -- 2. Gebruik de view in een query waarbij je de "deelnemers" view combineert met de "personeels" view (behandeld in de les):
 --     CREATE OR REPLACE VIEW personeel AS
 -- 	     SELECT mnr, voorl, naam as medewerker, afd, functie
