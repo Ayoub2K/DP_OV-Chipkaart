@@ -19,6 +19,12 @@
 -- 1. Voer het volgende EXPLAIN statement uit:
 --    EXPLAIN SELECT * FROM order_lines WHERE stock_item_id = 9;
 --    Bekijk of je het resultaat begrijpt. Kopieer het explain plan onderaan de opdracht
+
+-- "Gather  (cost=1000.00..6151.07 rows=998 width=96)"
+-- "  Workers Planned: 2"
+-- "  ->  Parallel Seq Scan on order_lines  (cost=0.00..5051.27 rows=416 width=96)"
+-- "        Filter: (stock_item_id = 9)"
+
 -- 2. Voeg een index op stock_item_id toe:
 --    CREATE INDEX ord_lines_si_id_idx ON order_lines (stock_item_id);
 -- 3. Analyseer opnieuw met EXPLAIN hoe de query nu uitgevoerd wordt
