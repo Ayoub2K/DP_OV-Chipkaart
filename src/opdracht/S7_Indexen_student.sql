@@ -92,11 +92,12 @@ CREATE INDEX orders_customer_id_index ON orders (customer_id);
 -- Sorteer het resultaat van de hele geheel op levertijd (desc) en verkoper.
 -- 1. Maak hieronder deze query (als je het goed doet zouden er 377 rijen uit moeten komen, en het kan best even duren...)
 
-SELECT o.order_id, o.order_date, salesperson_person_id, (o.expected_delivery_date - o.order_date) AS levertijd
-FROM orders o, order_lines ol
-WHERE ol.order_id = o.order_id
-  AND ol.quantity > 250 AND (o.expected_delivery_date - o.order_date) > 1.45;
-
+select o.order_id, o.order_date, o.salesperson_person_id as verkoper, ol.quantity, (o.expected_delivery_date - o.order_date) as levertijd
+    from orders o, order_lines ol, customers c WHERE  o.order_id = ol.order_id AND c.customer_id = o.salesperson_person_id
+        and ol.quantity > 250 and (SELECT avg(expected_delivery_date - order_date)
+            FROM orders o, customers cu WHERE o.salesperson_person_id = c.customer_id AND c.customer_id = cu.customer_id
+                GROUP BY c.customer_id) > 1.45
+                    order by levertijd DESC, verkoper;
 
 -- S7.3.B
 --
@@ -105,10 +106,64 @@ WHERE ol.order_id = o.order_id
 -- 3. Maak de index(en) aan en run nogmaals het EXPLAIN plan (kopieer weer onder de opdracht) 
 -- 4. Wat voor verschillen zie je? Verklaar hieronder.
 
+-- Sort  (cost=48777.44..48778.20 rows=306 width=20)
+-- "  Sort Key: ((o.expected_delivery_date - o.order_date)) DESC, o.salesperson_person_id"
+--   ->  Merge Join  (cost=7656.84..48764.80 rows=306 width=20)
+--         Merge Cond: (c.customer_id = o.salesperson_person_id)
+--         ->  Index Only Scan using pk_sales_customers on customers c  (cost=0.28..1297571.05 rows=221 width=4)
+--               Filter: ((SubPlan 1) > 1.45)
+--               SubPlan 1
+--                 ->  GroupAggregate  (cost=0.28..1957.04 rows=1 width=36)
+--                       Group Key: c.customer_id
+--                       ->  Nested Loop  (cost=0.28..1901.83 rows=7360 width=12)
+--                             ->  Index Only Scan using pk_sales_customers on customers cu  (cost=0.28..8.29 rows=1 width=0)
+--                                   Index Cond: (customer_id = c.customer_id)
+--                             ->  Seq Scan on orders o_1  (cost=0.00..1819.94 rows=7360 width=8)
+--                                   Filter: (salesperson_person_id = c.customer_id)
+--         ->  Sort  (cost=7656.57..7658.86 rows=918 width=20)
+--               Sort Key: o.salesperson_person_id
+--               ->  Gather  (cost=1000.29..7611.39 rows=918 width=20)
+--                     Workers Planned: 2
+--                     ->  Nested Loop  (cost=0.29..6519.59 rows=382 width=20)
+--                           ->  Parallel Seq Scan on order_lines ol  (cost=0.00..5051.27 rows=382 width=8)
+--                                 Filter: (quantity > 250)
+--                           ->  Index Scan using pk_sales_orders on orders o  (cost=0.29..3.84 rows=1 width=16)
+--                                 Index Cond: (order_id = ol.order_id)
+
+CREATE INDEX index_orders ON orders (order_id ) ;
+
+-- Na index
+-- "Sort  (cost=48777.44..48778.20 rows=306 width=20)"
+-- "  Sort Key: ((o.expected_delivery_date - o.order_date)) DESC, o.salesperson_person_id"
+-- "  ->  Merge Join  (cost=7656.84..48764.80 rows=306 width=20)"
+-- "        Merge Cond: (c.customer_id = o.salesperson_person_id)"
+-- "        ->  Index Only Scan using pk_sales_customers on customers c  (cost=0.28..1297571.05 rows=221 width=4)"
+-- "              Filter: ((SubPlan 1) > 1.45)"
+-- "              SubPlan 1"
+-- "                ->  GroupAggregate  (cost=0.28..1957.04 rows=1 width=36)"
+-- "                      Group Key: c.customer_id"
+-- "                      ->  Nested Loop  (cost=0.28..1901.83 rows=7360 width=12)"
+-- "                            ->  Index Only Scan using pk_sales_customers on customers cu  (cost=0.28..8.29 rows=1 width=0)"
+-- "                                  Index Cond: (customer_id = c.customer_id)"
+-- "                            ->  Seq Scan on orders o_1  (cost=0.00..1819.94 rows=7360 width=8)"
+-- "                                  Filter: (salesperson_person_id = c.customer_id)"
+-- "        ->  Sort  (cost=7656.57..7658.86 rows=918 width=20)"
+-- "              Sort Key: o.salesperson_person_id"
+-- "              ->  Gather  (cost=1000.29..7611.39 rows=918 width=20)"
+-- "                    Workers Planned: 2"
+-- "                    ->  Nested Loop  (cost=0.29..6519.59 rows=382 width=20)"
+-- "                          ->  Parallel Seq Scan on order_lines ol  (cost=0.00..5051.27 rows=382 width=8)"
+-- "                                Filter: (quantity > 250)"
+-- "                          ->  Index Scan using pk_sales_orders on orders o  (cost=0.29..3.84 rows=1 width=16)"
+-- "                                Index Cond: (order_id = ol.order_id)"
+
+-- ik zie weinig vershil in de sort
+
+
+
 
 
 -- S7.3.C
 --
 -- Zou je de query ook heel anders kunnen schrijven om hem te versnellen?
-
-
+-- met minder sub query's zou het sneller zijn
