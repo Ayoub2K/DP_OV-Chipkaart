@@ -131,6 +131,7 @@ select o.order_id, o.order_date, o.salesperson_person_id as verkoper, ol.quantit
 --                                 Index Cond: (order_id = ol.order_id)
 
 CREATE INDEX index_orders ON orders (order_id ) ;
+CREATE INDEX sales_id_orders ON orders (salesperson_person_id);
 
 -- Na index
 -- "Sort  (cost=48777.44..48778.20 rows=306 width=20)"
@@ -157,7 +158,7 @@ CREATE INDEX index_orders ON orders (order_id ) ;
 -- "                          ->  Index Scan using pk_sales_orders on orders o  (cost=0.29..3.84 rows=1 width=16)"
 -- "                                Index Cond: (order_id = ol.order_id)"
 
--- ik zie weinig vershil in de sort
+-- omdat er veel tabellen zijn met orders id en sales_id
 
 
 
@@ -166,4 +167,12 @@ CREATE INDEX index_orders ON orders (order_id ) ;
 -- S7.3.C
 --
 -- Zou je de query ook heel anders kunnen schrijven om hem te versnellen?
+select o.order_id, o.order_date, o.salesperson_person_id as verkoper, ol.quantity, (o.expected_delivery_date - o.order_date) as levertijd
+FROM orders o
+         JOIN order_lines ol on o.order_id = ol.order_id
+         JOIN customers c on o.salesperson_person_id = c.customer_id WHERE  o.order_id = ol.order_id AND c.customer_id = o.salesperson_person_id
+                                                                       and ol.quantity > 250 and (SELECT avg(expected_delivery_date - order_date)
+                                                                                                  FROM orders o, customers cu WHERE o.salesperson_person_id = c.customer_id AND c.customer_id = cu.customer_id
+                                                                                                  GROUP BY c.customer_id) > 1.45
+order by levertijd DESC, verkoper;
 -- met minder sub query's zou het sneller zijn
